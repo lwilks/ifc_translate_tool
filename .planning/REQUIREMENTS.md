@@ -64,24 +64,24 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TRAN-01 | TBD | Pending |
-| TRAN-02 | TBD | Pending |
-| TRAN-03 | TBD | Pending |
-| FILE-01 | TBD | Pending |
-| FILE-02 | TBD | Pending |
-| FILE-03 | TBD | Pending |
-| FILE-04 | TBD | Pending |
-| PRES-01 | TBD | Pending |
-| PRES-02 | TBD | Pending |
-| PRES-03 | TBD | Pending |
-| PRES-04 | TBD | Pending |
-| DIST-01 | TBD | Pending |
+| TRAN-01 | Phase 1 | Pending |
+| TRAN-02 | Phase 1 | Pending |
+| TRAN-03 | Phase 1 | Pending |
+| FILE-01 | Phase 1 | Pending |
+| FILE-02 | Phase 3 | Pending |
+| FILE-03 | Phase 1 | Pending |
+| FILE-04 | Phase 1 | Pending |
+| PRES-01 | Phase 2 | Pending |
+| PRES-02 | Phase 2 | Pending |
+| PRES-03 | Phase 2 | Pending |
+| PRES-04 | Phase 2 | Pending |
+| DIST-01 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 12 total
-- Mapped to phases: 0
-- Unmapped: 12 (pending roadmap creation)
+- Mapped to phases: 12
+- Unmapped: 0
 
 ---
 *Requirements defined: 2025-01-30*
-*Last updated: 2025-01-30 after initial definition*
+*Last updated: 2026-01-30 after roadmap creation*
