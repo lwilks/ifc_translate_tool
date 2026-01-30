@@ -9,16 +9,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Transformation
 
-- [ ] **TRAN-01**: Apply X/Y/Z coordinate offsets to IFC file using IfcPatch OffsetObjectPlacements recipe
-- [ ] **TRAN-02**: Apply rotation values to IFC file
-- [ ] **TRAN-03**: Toggle "Rotate First" to control operation order (rotate then translate, or translate then rotate)
+- [x] **TRAN-01**: Apply X/Y/Z coordinate offsets to IFC file using IfcPatch OffsetObjectPlacements recipe
+- [x] **TRAN-02**: Apply rotation values to IFC file
+- [x] **TRAN-03**: Toggle "Rotate First" to control operation order (rotate then translate, or translate then rotate)
 
 ### File Handling
 
-- [ ] **FILE-01**: Select and process single IFC file
+- [x] **FILE-01**: Select and process single IFC file
 - [ ] **FILE-02**: Batch process multiple IFC files from input directory
-- [ ] **FILE-03**: Configure output directory for processed files
-- [ ] **FILE-04**: Output files retain original filename in output directory
+- [x] **FILE-03**: Configure output directory for processed files
+- [x] **FILE-04**: Output files retain original filename in output directory
 
 ### Preset Management
 
@@ -64,13 +64,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TRAN-01 | Phase 1 | Pending |
-| TRAN-02 | Phase 1 | Pending |
-| TRAN-03 | Phase 1 | Pending |
-| FILE-01 | Phase 1 | Pending |
+| TRAN-01 | Phase 1 | Complete |
+| TRAN-02 | Phase 1 | Complete |
+| TRAN-03 | Phase 1 | Complete |
+| FILE-01 | Phase 1 | Complete |
 | FILE-02 | Phase 3 | Pending |
-| FILE-03 | Phase 1 | Pending |
-| FILE-04 | Phase 1 | Pending |
+| FILE-03 | Phase 1 | Complete |
+| FILE-04 | Phase 1 | Complete |
 | PRES-01 | Phase 2 | Pending |
 | PRES-02 | Phase 2 | Pending |
 | PRES-03 | Phase 2 | Pending |

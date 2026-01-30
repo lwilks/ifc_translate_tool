@@ -12,7 +12,7 @@ This roadmap delivers a standalone Windows desktop application that transforms I
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Core Transformation + Basic UI** - Single file processing with coordinate transformation
+- [x] **Phase 1: Core Transformation + Basic UI** - Single file processing with coordinate transformation
 - [ ] **Phase 2: Preset Management** - Save and reuse transformation settings
 - [ ] **Phase 3: Batch Processing** - Process multiple IFC files at once
 - [ ] **Phase 4: Distribution** - Package as standalone Windows executable
@@ -32,9 +32,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md - Project setup and core IFC transformation model
-- [ ] 01-02-PLAN.md - Validation utilities and Tkinter view layer
-- [ ] 01-03-PLAN.md - Controller integration and working application
+- [x] 01-01-PLAN.md - Project setup and core IFC transformation model
+- [x] 01-02-PLAN.md - Validation utilities and Tkinter view layer
+- [x] 01-03-PLAN.md - Controller integration and working application
 
 ### Phase 2: Preset Management
 **Goal**: Users can save and reuse transformation presets
@@ -85,7 +85,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Transformation + Basic UI | 0/3 | Planned | - |
+| 1. Core Transformation + Basic UI | 3/3 | ✓ Complete | 2026-01-30 |
 | 2. Preset Management | 0/TBD | Not started | - |
 | 3. Batch Processing | 0/TBD | Not started | - |
 | 4. Distribution | 0/TBD | Not started | - |
