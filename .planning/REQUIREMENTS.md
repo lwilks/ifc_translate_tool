@@ -16,7 +16,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### File Handling
 
 - [x] **FILE-01**: Select and process single IFC file
-- [ ] **FILE-02**: Batch process multiple IFC files from input directory
+- [x] **FILE-02**: Batch process multiple IFC files from input directory
 - [x] **FILE-03**: Configure output directory for processed files
 - [x] **FILE-04**: Output files retain original filename in output directory
 
@@ -68,7 +68,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TRAN-02 | Phase 1 | Complete |
 | TRAN-03 | Phase 1 | Complete |
 | FILE-01 | Phase 1 | Complete |
-| FILE-02 | Phase 3 | Pending |
+| FILE-02 | Phase 3 | Complete |
 | FILE-03 | Phase 1 | Complete |
 | FILE-04 | Phase 1 | Complete |
 | PRES-01 | Phase 2 | Complete |
