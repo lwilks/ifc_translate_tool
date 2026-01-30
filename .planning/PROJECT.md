@@ -8,25 +8,43 @@ A standalone Windows desktop application that wraps IfcPatch's OffsetObjectPlace
 
 Users can transform IFC coordinates reliably with saved presets, processing single or multiple files without technical knowledge.
 
+## Current State
+
+**Version:** v1.0 MVP (shipped 2026-01-30)
+**Status:** Feature complete, ready for Windows build
+
+**Codebase:**
+- 1,373 lines of Python
+- MVC architecture (model, view, controller, presets_model)
+- Tkinter UI with threading for responsiveness
+
+**Tech Stack:**
+- Python 3.11
+- ifcopenshell 0.7.10 / ifcpatch 0.7.10
+- platformdirs for cross-platform preset storage
+- PyInstaller for Windows bundling
+- Inno Setup for installer
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- TRAN-01: Apply X/Y/Z coordinate offsets — v1.0
+- TRAN-02: Apply rotation values — v1.0
+- TRAN-03: Toggle "Rotate First" operation order — v1.0
+- FILE-01: Load and process individual IFC files — v1.0
+- FILE-02: Batch process multiple IFC files — v1.0
+- FILE-03: Configure output directory — v1.0
+- FILE-04: Output files keep original filename — v1.0
+- PRES-01: Save transformation presets — v1.0
+- PRES-02: Load presets to populate fields — v1.0
+- PRES-03: Delete saved presets — v1.0
+- PRES-04: Auto-load last used preset — v1.0
+- DIST-01: Run as standalone Windows executable — v1.0
 
 ### Active
 
-- [ ] Load and process individual IFC files
-- [ ] Batch process multiple IFC files from input directory
-- [ ] Configure X/Y/Z offset values
-- [ ] Configure rotation values
-- [ ] Toggle "Rotate First" operation order
-- [ ] Save transformation settings as named presets
-- [ ] Load presets to populate form fields
-- [ ] Configure input directory for batch processing
-- [ ] Configure output directory for processed files
-- [ ] Output files keep original filename in output directory
-- [ ] Runs as standalone Windows executable (no Python installation required)
+(None — v1.0 complete)
 
 ### Out of Scope
 
@@ -57,8 +75,14 @@ Users can transform IFC coordinates reliably with saved presets, processing sing
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Desktop app over web | Client needs local file access, no server infrastructure | — Pending |
-| OffsetObjectPlacements only | Scoped to client's actual need, avoid feature creep | — Pending |
+| Desktop app over web | Client needs local file access, no server infrastructure | Good |
+| OffsetObjectPlacements only | Scoped to client's actual need, avoid feature creep | Good |
+| ifcopenshell 0.7.10 | 0.8.x has circular import bug | Good |
+| MVC with Tkinter | Simple, built-in, cross-platform for development | Good |
+| platformdirs for presets | Handles OS-specific conventions automatically | Good |
+| threading.Event for cancellation | Thread-safe signaling pattern | Good |
+| --onedir PyInstaller mode | Better native extension compatibility | Good |
+| UPX disabled | Prevents DLL corruption with native extensions | Good |
 
 ---
-*Last updated: 2025-01-30 after initialization*
+*Last updated: 2026-01-30 after v1.0 milestone*
