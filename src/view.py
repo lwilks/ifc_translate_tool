@@ -6,7 +6,7 @@ for file selection, transformation parameters, and processing controls.
 """
 
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 
 
 class TransformView:
@@ -35,7 +35,7 @@ class TransformView:
 
         # Configure window
         self.root.title("IFC Translate Tool")
-        self.root.geometry("550x500")
+        self.root.geometry("550x580")
 
         # Initialize all StringVars and BooleanVars
         self.input_file_var = tk.StringVar()
@@ -58,6 +58,27 @@ class TransformView:
         # Main container with padding
         main_frame = tk.Frame(self.root, padx=20, pady=20)
         main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Preset management section
+        preset_frame = tk.LabelFrame(main_frame, text="Presets", padx=10, pady=10)
+        preset_frame.pack(fill=tk.X, pady=5)
+
+        # Row with combobox and buttons
+        preset_row = tk.Frame(preset_frame)
+        preset_row.pack(fill=tk.X)
+
+        # Preset dropdown (readonly to prevent typing)
+        self.preset_combo = ttk.Combobox(preset_row, state='readonly', width=25)
+        self.preset_combo.pack(side=tk.LEFT, padx=(0, 10))
+        self.preset_combo.bind('<<ComboboxSelected>>', self._on_preset_selected)
+
+        # Save button
+        self.save_preset_button = tk.Button(preset_row, text="Save", command=self._on_save_preset_clicked)
+        self.save_preset_button.pack(side=tk.LEFT, padx=2)
+
+        # Delete button
+        self.delete_preset_button = tk.Button(preset_row, text="Delete", command=self._on_delete_preset_clicked)
+        self.delete_preset_button.pack(side=tk.LEFT, padx=2)
 
         # Input file selection
         file_frame = tk.Frame(main_frame)
@@ -272,3 +293,67 @@ class TransformView:
         else:
             self.process_button.config(state=tk.NORMAL)
             self.show_status("Ready")
+
+    def _on_preset_selected(self, event):
+        """Handle preset selection from dropdown."""
+        if self.controller is not None:
+            self.controller.on_preset_selected()
+
+    def _on_save_preset_clicked(self):
+        """Handle Save preset button click."""
+        if self.controller is not None:
+            self.controller.on_save_preset()
+
+    def _on_delete_preset_clicked(self):
+        """Handle Delete preset button click."""
+        if self.controller is not None:
+            self.controller.on_delete_preset()
+
+    def update_preset_list(self, preset_names: list):
+        """Update the preset dropdown with available presets."""
+        self.preset_combo['values'] = preset_names
+        # Disable delete button if no presets
+        if preset_names:
+            self.delete_preset_button.config(state=tk.NORMAL)
+        else:
+            self.delete_preset_button.config(state=tk.DISABLED)
+
+    def get_selected_preset(self) -> str:
+        """Get the currently selected preset name."""
+        return self.preset_combo.get()
+
+    def set_selected_preset(self, preset_name: str):
+        """Set the selected preset in the dropdown."""
+        self.preset_combo.set(preset_name)
+
+    def set_values(self, values: dict):
+        """Set form field values from a dictionary (opposite of get_values)."""
+        self.x_var.set(str(values.get('x', 0)))
+        self.y_var.set(str(values.get('y', 0)))
+        self.z_var.set(str(values.get('z', 0)))
+        self.rotation_var.set(str(values.get('rotation', 0)))
+        self.rotate_first_var.set(values.get('rotate_first', True))
+
+    def ask_preset_name(self) -> str | None:
+        """Show dialog to get preset name from user. Returns None if cancelled."""
+        from tkinter import simpledialog
+        name = simpledialog.askstring(
+            "Save Preset",
+            "Enter preset name:",
+            parent=self.root
+        )
+        return name.strip() if name else None
+
+    def confirm_delete(self, preset_name: str) -> bool:
+        """Show confirmation dialog for preset deletion."""
+        return messagebox.askyesno(
+            "Delete Preset",
+            f"Delete preset '{preset_name}'?"
+        )
+
+    def confirm_overwrite(self, preset_name: str) -> bool:
+        """Show confirmation dialog for preset overwrite."""
+        return messagebox.askyesno(
+            "Overwrite Preset",
+            f"Preset '{preset_name}' already exists. Overwrite?"
+        )
