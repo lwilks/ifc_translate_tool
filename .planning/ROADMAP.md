@@ -75,10 +75,11 @@ Plans:
   2. User launches application from Start Menu or desktop shortcut
   3. Application runs successfully on clean Windows machine with no Python installed
   4. Application properly bundles all IfcOpenShell native dependencies (no DLL errors)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- TBD (created during plan-phase)
+- [ ] 04-01-PLAN.md - PyInstaller spec file and Inno Setup script configuration
+- [ ] 04-02-PLAN.md - Windows build and installer verification (checkpoint)
 
 ## Progress
 
@@ -90,7 +91,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Core Transformation + Basic UI | 3/3 | Complete | 2026-01-30 |
 | 2. Preset Management | 2/2 | Complete | 2026-01-30 |
 | 3. Batch Processing | 2/2 | Complete | 2026-01-30 |
-| 4. Distribution | 0/TBD | Not started | - |
+| 4. Distribution | 0/2 | In Progress | - |
 
 ---
 *Roadmap created: 2026-01-30*
