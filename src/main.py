@@ -29,6 +29,12 @@ def main():
     view = TransformView(root)
     controller = TransformController(model, view)
 
+    # Bring window to front on macOS
+    root.lift()
+    root.attributes('-topmost', True)
+    root.after(100, lambda: root.attributes('-topmost', False))
+    root.focus_force()
+
     # Start the application
     root.mainloop()
 
