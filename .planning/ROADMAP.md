@@ -60,10 +60,11 @@ Plans:
   2. User clicks process button once and all IFC files in directory are transformed with same settings
   3. User sees progress updates showing which file is currently processing and overall completion
   4. User can cancel batch processing mid-operation without corrupting files
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- TBD (created during plan-phase)
+- [ ] 03-01-PLAN.md - Validation utilities and batch mode UI components
+- [ ] 03-02-PLAN.md - Controller wiring with cancellation and progress tracking
 
 ### Phase 4: Distribution
 **Goal**: Users can install and run without Python
@@ -88,7 +89,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Core Transformation + Basic UI | 3/3 | Complete | 2026-01-30 |
 | 2. Preset Management | 2/2 | Complete | 2026-01-30 |
-| 3. Batch Processing | 0/TBD | Not started | - |
+| 3. Batch Processing | 0/2 | Planned | - |
 | 4. Distribution | 0/TBD | Not started | - |
 
 ---
