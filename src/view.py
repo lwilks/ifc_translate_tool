@@ -35,7 +35,7 @@ class TransformView:
 
         # Configure window
         self.root.title("IFC Translate Tool")
-        self.root.geometry("550x400")
+        self.root.geometry("550x500")
 
         # Initialize all StringVars and BooleanVars
         self.input_file_var = tk.StringVar()

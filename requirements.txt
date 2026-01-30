@@ -1,2 +1,2 @@
-ifcopenshell>=0.8.4
-ifcpatch>=0.8.4
+ifcopenshell==0.7.10
+ifcpatch==0.7.10
