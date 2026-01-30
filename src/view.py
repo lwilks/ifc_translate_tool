@@ -307,6 +307,8 @@ class TransformView:
         """Handle cancel button click."""
         self.cancel_requested = True
         self.cancel_button.config(state=tk.DISABLED)
+        if self.controller is not None:
+            self.controller.on_cancel_clicked()
 
     def _on_process_clicked(self):
         """Handle process button click."""

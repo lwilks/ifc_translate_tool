@@ -7,7 +7,13 @@ handles user events, manages background processing, and provides user feedback.
 
 import threading
 import queue
-from src.utils.validation import validate_input_file, validate_output_directory, build_output_path
+from src.utils.validation import (
+    validate_input_file,
+    validate_output_directory,
+    validate_input_directory,
+    find_ifc_files,
+    build_output_path
+)
 
 
 class TransformController:
@@ -35,6 +41,8 @@ class TransformController:
         self.view = view
         self.presets_model = presets_model
         self.result_queue = queue.Queue()
+        self.stop_event = threading.Event()
+        self.batch_errors = []
 
         # Wire controller to view
         view.set_controller(self)
@@ -61,13 +69,41 @@ class TransformController:
             # Non-blocking check for results
             result = self.result_queue.get_nowait()
 
-            # Update UI based on result
-            self.view.set_processing(False)
+            # Handle batch processing messages
+            msg_type = result.get('type')
 
-            if result['success']:
-                self.view.show_success(result['message'])
-            else:
-                self.view.show_error(result['message'])
+            if msg_type == 'batch_progress':
+                self.view.update_batch_progress(
+                    result['current'],
+                    result['total'],
+                    result['filename']
+                )
+
+            elif msg_type == 'batch_error':
+                # Update progress even on error (batch continues)
+                self.view.update_batch_progress(
+                    result['current'],
+                    result['total'],
+                    f"ERROR: {result['filename']}"
+                )
+
+            elif msg_type == 'batch_cancelled':
+                self.view.set_processing(False)
+                self.view.end_batch_progress()
+                self.view.show_status(f"Cancelled after {result['processed']}/{result['total']} files")
+
+            elif msg_type == 'batch_complete':
+                self.view.set_processing(False)
+                self.view.end_batch_progress()
+                self._show_batch_summary(result['total'], result['errors'])
+
+            elif result.get('success') is not None:
+                # Existing single-file handling
+                self.view.set_processing(False)
+                if result['success']:
+                    self.view.show_success(result['message'])
+                else:
+                    self.view.show_error(result['message'])
 
         except queue.Empty:
             # No results yet, continue polling
@@ -83,6 +119,11 @@ class TransformController:
         Validates inputs, starts background transformation thread,
         and updates UI state.
         """
+        # Check if batch mode is enabled
+        if self.view.get_batch_mode():
+            self._on_batch_process_clicked()
+            return
+
         # Get form values
         values = self.view.get_values()
 
@@ -153,6 +194,128 @@ class TransformController:
                 'success': False,
                 'message': f'Transformation failed: {e}'
             })
+
+    def _on_batch_process_clicked(self):
+        """Handle batch processing mode."""
+        # Get values
+        values = self.view.get_values()
+        input_dir = self.view.get_input_directory()
+
+        # Validate inputs
+        try:
+            validate_input_directory(input_dir)
+            validate_output_directory(values['output_dir'])
+        except ValueError as e:
+            self.view.show_error(str(e))
+            return
+
+        # Find IFC files
+        files = find_ifc_files(input_dir)
+
+        # Check if any files found
+        if len(files) == 0:
+            self.view.show_error("No IFC files found in directory")
+            return
+
+        # Reset state
+        self.stop_event.clear()
+        self.batch_errors = []
+        self.view.reset_cancel()
+
+        # Start progress
+        self.view.start_batch_progress(len(files))
+
+        # Set UI to processing
+        self.view.set_processing(True)
+
+        # Start thread
+        thread = threading.Thread(
+            target=self._run_batch_transformation,
+            args=(files, values)
+        )
+        thread.daemon = True
+        thread.start()
+
+    def _run_batch_transformation(self, files, values):
+        """Run batch transformation in background thread."""
+        output_dir = values['output_dir']
+        rotation_z = values['rotation'] if values['rotation'] != 0 else None
+
+        for i, input_file in enumerate(files):
+            # Check cancellation before each file
+            if self.stop_event.is_set():
+                self.result_queue.put({
+                    'type': 'batch_cancelled',
+                    'processed': i,
+                    'total': len(files)
+                })
+                return
+
+            output_path = build_output_path(str(input_file), output_dir)
+
+            try:
+                self.model.transform_file(
+                    input_path=str(input_file),
+                    output_path=str(output_path),
+                    x=values['x'],
+                    y=values['y'],
+                    z=values['z'],
+                    should_rotate_first=values['rotate_first'],
+                    rotation_z=rotation_z
+                )
+                # Report progress
+                self.result_queue.put({
+                    'type': 'batch_progress',
+                    'current': i + 1,
+                    'total': len(files),
+                    'filename': input_file.name
+                })
+            except Exception as e:
+                # Log error but continue batch
+                self.batch_errors.append((input_file.name, str(e)))
+                self.result_queue.put({
+                    'type': 'batch_error',
+                    'filename': input_file.name,
+                    'error': str(e),
+                    'current': i + 1,
+                    'total': len(files)
+                })
+
+        # Batch complete
+        self.result_queue.put({
+            'type': 'batch_complete',
+            'total': len(files),
+            'errors': len(self.batch_errors)
+        })
+
+    def _show_batch_summary(self, total, error_count):
+        """Show batch processing summary dialog."""
+        success_count = total - error_count
+
+        if error_count == 0:
+            self.view.show_success(
+                f"Batch complete!\n\n"
+                f"Successfully processed {success_count} files."
+            )
+        else:
+            # Build error details
+            error_details = "\n".join(
+                f"  - {name}: {error}"
+                for name, error in self.batch_errors[:5]  # Show first 5
+            )
+            more = f"\n  ... and {error_count - 5} more" if error_count > 5 else ""
+
+            self.view.show_error(
+                f"Batch complete with errors.\n\n"
+                f"Succeeded: {success_count}\n"
+                f"Failed: {error_count}\n\n"
+                f"Errors:\n{error_details}{more}"
+            )
+
+    def on_cancel_clicked(self):
+        """Handle cancel button click during batch processing."""
+        self.stop_event.set()
+        self.view.show_status("Cancelling...")
 
     def _refresh_preset_list(self):
         """Refresh the preset dropdown with current presets."""
