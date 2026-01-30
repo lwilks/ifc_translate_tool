@@ -35,17 +35,23 @@ class TransformView:
 
         # Configure window
         self.root.title("IFC Translate Tool")
-        self.root.geometry("550x580")
+        self.root.geometry("550x680")
 
         # Initialize all StringVars and BooleanVars
         self.input_file_var = tk.StringVar()
         self.output_dir_var = tk.StringVar()
+        self.input_dir_var = tk.StringVar()
         self.x_var = tk.StringVar(value="0")
         self.y_var = tk.StringVar(value="0")
         self.z_var = tk.StringVar(value="0")
         self.rotation_var = tk.StringVar(value="0")
         self.rotate_first_var = tk.BooleanVar(value=True)
+        self.batch_mode_var = tk.BooleanVar(value=False)
         self.status_var = tk.StringVar(value="Ready")
+        self.batch_status_var = tk.StringVar(value="")
+
+        # Batch processing state
+        self.cancel_requested = False
 
         # Register float validation command
         validate_float_cmd = self.root.register(self._validate_float)
@@ -80,19 +86,45 @@ class TransformView:
         self.delete_preset_button = tk.Button(preset_row, text="Delete", command=self._on_delete_preset_clicked)
         self.delete_preset_button.pack(side=tk.LEFT, padx=2)
 
+        # Processing mode toggle
+        mode_frame = tk.LabelFrame(main_frame, text="Processing Mode", padx=10, pady=10)
+        mode_frame.pack(fill=tk.X, pady=5)
+
+        tk.Radiobutton(
+            mode_frame,
+            text="Single File",
+            variable=self.batch_mode_var,
+            value=False,
+            command=self._on_mode_changed
+        ).pack(side=tk.LEFT, padx=10)
+
+        tk.Radiobutton(
+            mode_frame,
+            text="Batch (Directory)",
+            variable=self.batch_mode_var,
+            value=True,
+            command=self._on_mode_changed
+        ).pack(side=tk.LEFT, padx=10)
+
         # Input file selection
-        file_frame = tk.Frame(main_frame)
-        file_frame.pack(fill=tk.X, pady=5)
-        tk.Label(file_frame, text="Input IFC File:", width=15, anchor="w").pack(side=tk.LEFT)
-        tk.Entry(file_frame, textvariable=self.input_file_var, width=35).pack(side=tk.LEFT, padx=5)
-        tk.Button(file_frame, text="Browse...", command=self._select_input_file).pack(side=tk.LEFT)
+        self.input_file_frame = tk.Frame(main_frame)
+        self.input_file_frame.pack(fill=tk.X, pady=5)
+        tk.Label(self.input_file_frame, text="Input IFC File:", width=15, anchor="w").pack(side=tk.LEFT)
+        tk.Entry(self.input_file_frame, textvariable=self.input_file_var, width=35).pack(side=tk.LEFT, padx=5)
+        tk.Button(self.input_file_frame, text="Browse...", command=self._select_input_file).pack(side=tk.LEFT)
+
+        # Input directory selection (initially hidden)
+        self.input_dir_frame = tk.Frame(main_frame)
+        tk.Label(self.input_dir_frame, text="Input Directory:", width=15, anchor="w").pack(side=tk.LEFT)
+        tk.Entry(self.input_dir_frame, textvariable=self.input_dir_var, width=35).pack(side=tk.LEFT, padx=5)
+        tk.Button(self.input_dir_frame, text="Browse...", command=self._select_input_dir).pack(side=tk.LEFT)
 
         # Output directory selection
-        output_frame = tk.Frame(main_frame)
-        output_frame.pack(fill=tk.X, pady=5)
-        tk.Label(output_frame, text="Output Directory:", width=15, anchor="w").pack(side=tk.LEFT)
-        tk.Entry(output_frame, textvariable=self.output_dir_var, width=35).pack(side=tk.LEFT, padx=5)
-        tk.Button(output_frame, text="Browse...", command=self._select_output_dir).pack(side=tk.LEFT)
+        self.output_frame = tk.Frame(main_frame)
+        self.output_frame.pack(fill=tk.X, pady=5)
+        tk.Label(self.output_frame, text="Output Directory:", width=15, anchor="w").pack(side=tk.LEFT)
+        tk.Entry(self.output_frame, textvariable=self.output_dir_var, width=35).pack(side=tk.LEFT, padx=5)
+        tk.Button(self.output_frame, text="Browse...", command=self._select_output_dir).pack(side=tk.LEFT)
 
         # Separator
         tk.Frame(main_frame, height=2, bd=1, relief=tk.SUNKEN).pack(fill=tk.X, pady=15)
@@ -170,7 +202,34 @@ class TransformView:
             height=2,
             font=("Arial", 12, "bold")
         )
-        self.process_button.pack()
+        self.process_button.pack(side=tk.LEFT, padx=(0, 10))
+
+        # Cancel button (initially hidden)
+        self.cancel_button = tk.Button(
+            button_frame,
+            text="Cancel",
+            command=self._on_cancel_clicked,
+            width=15,
+            height=2,
+            state=tk.DISABLED
+        )
+
+        # Progress section (initially hidden)
+        self.progress_frame = tk.LabelFrame(main_frame, text="Progress", padx=10, pady=10)
+
+        self.progress_bar = ttk.Progressbar(
+            self.progress_frame,
+            orient='horizontal',
+            length=400,
+            mode='determinate'
+        )
+        self.progress_bar.pack(pady=5)
+
+        tk.Label(
+            self.progress_frame,
+            textvariable=self.batch_status_var,
+            anchor="w"
+        ).pack(fill=tk.X)
 
         # Status display
         status_frame = tk.Frame(main_frame)
@@ -221,6 +280,33 @@ class TransformView:
         directory = filedialog.askdirectory(title="Select Output Directory")
         if directory:
             self.output_dir_var.set(directory)
+
+    def _select_input_dir(self):
+        """Open directory dialog to select input directory."""
+        directory = filedialog.askdirectory(title="Select Input Directory")
+        if directory:
+            self.input_dir_var.set(directory)
+
+    def _on_mode_changed(self):
+        """Handle mode toggle between single file and batch processing."""
+        is_batch = self.batch_mode_var.get()
+
+        if is_batch:
+            # Hide single file input, show directory input and progress
+            self.input_file_frame.pack_forget()
+            # Pack input_dir_frame before output frame to maintain proper order
+            self.input_dir_frame.pack(fill=tk.X, pady=5, before=self.output_frame)
+            self.cancel_button.pack(side=tk.LEFT)
+        else:
+            # Show single file input, hide directory input and progress
+            self.input_dir_frame.pack_forget()
+            self.input_file_frame.pack(fill=tk.X, pady=5, before=self.output_frame)
+            self.cancel_button.pack_forget()
+
+    def _on_cancel_clicked(self):
+        """Handle cancel button click."""
+        self.cancel_requested = True
+        self.cancel_button.config(state=tk.DISABLED)
 
     def _on_process_clicked(self):
         """Handle process button click."""
@@ -357,3 +443,50 @@ class TransformView:
             "Overwrite Preset",
             f"Preset '{preset_name}' already exists. Overwrite?"
         )
+
+    def get_batch_mode(self) -> bool:
+        """Return whether batch mode is enabled."""
+        return self.batch_mode_var.get()
+
+    def get_input_directory(self) -> str:
+        """Return the selected input directory path."""
+        return self.input_dir_var.get()
+
+    def start_batch_progress(self, total: int):
+        """
+        Initialize progress bar for batch processing.
+
+        Args:
+            total: Total number of files to process
+        """
+        self.progress_bar['maximum'] = total
+        self.progress_bar['value'] = 0
+        self.progress_frame.pack(fill=tk.X, pady=5)
+
+    def update_batch_progress(self, current: int, total: int, filename: str):
+        """
+        Update progress bar and status during batch processing.
+
+        Args:
+            current: Current file number (1-indexed)
+            total: Total number of files
+            filename: Name of current file being processed
+        """
+        self.progress_bar['value'] = current
+        self.batch_status_var.set(f"Processing: {filename} ({current}/{total})")
+        self.root.update_idletasks()
+
+    def end_batch_progress(self):
+        """Hide progress bar and reset state."""
+        self.progress_frame.pack_forget()
+        self.progress_bar['value'] = 0
+        self.batch_status_var.set("")
+
+    def is_cancel_requested(self) -> bool:
+        """Return whether user has requested cancellation."""
+        return self.cancel_requested
+
+    def reset_cancel(self):
+        """Reset cancellation state and re-enable cancel button."""
+        self.cancel_requested = False
+        self.cancel_button.config(state=tk.NORMAL)
