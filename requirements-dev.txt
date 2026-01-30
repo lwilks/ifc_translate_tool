@@ -1,0 +1,11 @@
+# Development dependencies for IFC Translate Tool
+# Includes all production dependencies plus build tools
+
+# Production dependencies
+ifcopenshell==0.7.10
+ifcpatch==0.7.10
+platformdirs>=4.0.0
+
+# Build tools
+pyinstaller
+pyinstaller-hooks-contrib

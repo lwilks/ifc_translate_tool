@@ -12,6 +12,11 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+*.spec.bak
+
+# Installer artifacts
+installer/*.exe
+installer/Output/
 
 # IDE
 .vscode/
