@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 4 of 4 (Distribution)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-01-30 — Phase 3 verified complete
+Plan: 1 of TBD in current phase
+Status: In progress
+Last activity: 2026-01-30 — Completed 04-01-PLAN.md
 
-Progress: [████████░░] 80%
+Progress: [█████████░] 88%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: ~5.6 min
-- Total execution time: ~39 min
+- Total plans completed: 8
+- Average duration: ~5.1 min
+- Total execution time: ~40.7 min
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [████████░░] 80%
 | 1     | 3     | ~21min | ~7min   |
 | 2     | 2     | ~10min | ~5min   |
 | 3     | 2     | ~8.7min | ~4.4min |
+| 4     | 1     | ~1.7min | ~1.7min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (1.9min), 02-02 (8min), 03-01 (3.7min), 03-02 (5min)
-- Trend: Consistent (Phase 3 complete with excellent velocity)
+- Last 5 plans: 02-02 (8min), 03-01 (3.7min), 03-02 (5min), 04-01 (1.7min)
+- Trend: Improving (Phase 4 first plan excellent velocity)
 
 *Updated after each plan completion*
 
@@ -72,6 +73,10 @@ Recent decisions affecting current work:
 | 03-02 | Queue-based messaging for UI updates | Thread-safe communication from background thread | Tkinter not thread-safe for direct UI updates |
 | 03-02 | Show first 5 errors in summary | Balance between detail and UI readability | User can investigate logs for full details if needed |
 | 03-02 | Check stop event before file, not during | Provides clean cancellation boundary | File transformations are atomic - either complete or not started |
+| 04-01 | Use --onedir mode for PyInstaller | Better native extension compatibility than --onefile | More reliable distribution, faster startup time |
+| 04-01 | Disable UPX compression | Prevents DLL corruption with native extensions | Larger executable but eliminates runtime errors |
+| 04-01 | Desktop shortcut unchecked by default | Reduces desktop clutter, follows installer conventions | Start Menu remains primary access point |
+| 04-01 | Separate requirements-dev.txt for build tools | Clearer separation of build-time vs runtime dependencies | Smaller production installs, better clarity |
 
 ### Pending Todos
 
@@ -83,8 +88,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-01-30 — Completed 03-02-PLAN.md
-Stopped at: Phase 3 complete, ready for Phase 4 (Distribution)
+Last session: 2026-01-30 — Completed 04-01-PLAN.md
+Stopped at: Phase 4 distribution configuration complete
 Resume file: None
 
 ---
