@@ -145,9 +145,8 @@ class TransformView:
             button_frame,
             text="Process",
             command=self._on_process_clicked,
+            width=20,
             height=2,
-            bg="#4CAF50",
-            fg="white",
             font=("Arial", 12, "bold")
         )
         self.process_button.pack()
