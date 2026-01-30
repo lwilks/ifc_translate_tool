@@ -22,10 +22,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Preset Management
 
-- [ ] **PRES-01**: Save current transformation values as named preset
-- [ ] **PRES-02**: Load saved preset to populate form fields
-- [ ] **PRES-03**: Delete saved presets
-- [ ] **PRES-04**: Auto-load last used preset on application startup
+- [x] **PRES-01**: Save current transformation values as named preset
+- [x] **PRES-02**: Load saved preset to populate form fields
+- [x] **PRES-03**: Delete saved presets
+- [x] **PRES-04**: Auto-load last used preset on application startup
 
 ### Distribution
 
@@ -71,10 +71,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FILE-02 | Phase 3 | Pending |
 | FILE-03 | Phase 1 | Complete |
 | FILE-04 | Phase 1 | Complete |
-| PRES-01 | Phase 2 | Pending |
-| PRES-02 | Phase 2 | Pending |
-| PRES-03 | Phase 2 | Pending |
-| PRES-04 | Phase 2 | Pending |
+| PRES-01 | Phase 2 | Complete |
+| PRES-02 | Phase 2 | Complete |
+| PRES-03 | Phase 2 | Complete |
+| PRES-04 | Phase 2 | Complete |
 | DIST-01 | Phase 4 | Pending |
 
 **Coverage:**

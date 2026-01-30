@@ -13,7 +13,7 @@ This roadmap delivers a standalone Windows desktop application that transforms I
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Transformation + Basic UI** - Single file processing with coordinate transformation
-- [ ] **Phase 2: Preset Management** - Save and reuse transformation settings
+- [x] **Phase 2: Preset Management** - Save and reuse transformation settings
 - [ ] **Phase 3: Batch Processing** - Process multiple IFC files at once
 - [ ] **Phase 4: Distribution** - Package as standalone Windows executable
 
@@ -45,10 +45,11 @@ Plans:
   2. User can select a preset from dropdown and all form fields populate automatically
   3. User can delete unwanted presets from the application
   4. User reopens application and sees the last used preset already loaded
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- TBD (created during plan-phase)
+- [x] 02-01-PLAN.md - PresetsModel and platformdirs dependency
+- [x] 02-02-PLAN.md - Preset UI and controller wiring
 
 ### Phase 3: Batch Processing
 **Goal**: Users can process multiple IFC files at once
@@ -81,12 +82,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Transformation + Basic UI | 3/3 | ✓ Complete | 2026-01-30 |
-| 2. Preset Management | 0/TBD | Not started | - |
+| 1. Core Transformation + Basic UI | 3/3 | Complete | 2026-01-30 |
+| 2. Preset Management | 2/2 | Complete | 2026-01-30 |
 | 3. Batch Processing | 0/TBD | Not started | - |
 | 4. Distribution | 0/TBD | Not started | - |
 
