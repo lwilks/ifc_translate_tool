@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Transformation + Basic UI** - Single file processing with coordinate transformation
 - [x] **Phase 2: Preset Management** - Save and reuse transformation settings
-- [ ] **Phase 3: Batch Processing** - Process multiple IFC files at once
+- [x] **Phase 3: Batch Processing** - Process multiple IFC files at once
 - [ ] **Phase 4: Distribution** - Package as standalone Windows executable
 
 ## Phase Details
@@ -63,8 +63,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md - Validation utilities and batch mode UI components
-- [ ] 03-02-PLAN.md - Controller wiring with cancellation and progress tracking
+- [x] 03-01-PLAN.md - Validation utilities and batch mode UI components
+- [x] 03-02-PLAN.md - Controller wiring with cancellation and progress tracking
 
 ### Phase 4: Distribution
 **Goal**: Users can install and run without Python
@@ -89,7 +89,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Core Transformation + Basic UI | 3/3 | Complete | 2026-01-30 |
 | 2. Preset Management | 2/2 | Complete | 2026-01-30 |
-| 3. Batch Processing | 0/2 | Planned | - |
+| 3. Batch Processing | 2/2 | Complete | 2026-01-30 |
 | 4. Distribution | 0/TBD | Not started | - |
 
 ---
