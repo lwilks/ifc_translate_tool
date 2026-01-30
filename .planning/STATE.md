@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 2 of 4 (Preset Management)
-Plan: 1 of TBD in current phase
-Status: In progress
-Last activity: 2026-01-30 — Completed 02-01-PLAN.md
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-01-30 — Completed 02-02-PLAN.md
 
-Progress: [██░░░░░░░░] 33%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: ~5.5 min
-- Total execution time: ~23 min
+- Total plans completed: 5
+- Average duration: ~6 min
+- Total execution time: ~31 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1     | 3     | ~21min | ~7min   |
-| 2     | 1     | ~2min  | ~2min   |
+| 2     | 2     | ~10min | ~5min   |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3.7min), 01-02 (2min), 01-03 (15min), 02-01 (1.9min)
-- Trend: Decreasing (recent plans faster, Phase 2 highly efficient)
+- Last 5 plans: 01-02 (2min), 01-03 (15min), 02-01 (1.9min), 02-02 (8min)
+- Trend: Stable (Phase 2 complete, good velocity)
 
 *Updated after each plan completion*
 
@@ -58,6 +58,10 @@ Recent decisions affecting current work:
 | 02-01 | Atomic writes via temp file + replace pattern | Prevents corruption from crashes or power loss | Robust persistence even in failure scenarios |
 | 02-01 | Graceful error handling returns empty dict on corrupted JSON | Don't crash application on corrupted preset files | Application always starts even with corrupted data |
 | 02-01 | Separate config.json for last-used preset tracking | Keep application config separate from user presets data | Clean separation of concerns |
+| 02-02 | Preset dropdown uses ttk.Combobox in readonly mode | Prevent typing arbitrary text, force selection from existing presets | Cleaner UX, no invalid preset names |
+| 02-02 | Delete button disabled when no presets exist | Clearer UI affordance - button only enabled when action is possible | Users understand when delete is unavailable |
+| 02-02 | Auto-load in controller __init__ | Restores user's last workflow immediately on app launch | Seamless user experience, no manual preset reselection |
+| 02-02 | Preset data excludes file paths | Presets are about transformation configuration, not specific files | Presets reusable across different projects/files |
 
 ### Pending Todos
 
@@ -69,8 +73,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-01-30 — Phase 2 execution in progress
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-01-30 — Phase 2 complete
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None
 
 ---
