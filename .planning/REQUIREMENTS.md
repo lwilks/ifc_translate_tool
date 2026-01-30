@@ -29,7 +29,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Distribution
 
-- [ ] **DIST-01**: Run as standalone Windows executable (no Python installation required)
+- [x] **DIST-01**: Run as standalone Windows executable (no Python installation required)
 
 ## v2 Requirements
 
@@ -75,7 +75,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRES-02 | Phase 2 | Complete |
 | PRES-03 | Phase 2 | Complete |
 | PRES-04 | Phase 2 | Complete |
-| DIST-01 | Phase 4 | Pending |
+| DIST-01 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 12 total

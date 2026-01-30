@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Core Transformation + Basic UI** - Single file processing with coordinate transformation
 - [x] **Phase 2: Preset Management** - Save and reuse transformation settings
 - [x] **Phase 3: Batch Processing** - Process multiple IFC files at once
-- [ ] **Phase 4: Distribution** - Package as standalone Windows executable
+- [x] **Phase 4: Distribution** - Package as standalone Windows executable
 
 ## Phase Details
 
@@ -78,8 +78,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md - PyInstaller spec file and Inno Setup script configuration
-- [ ] 04-02-PLAN.md - Windows build and installer verification (checkpoint)
+- [x] 04-01-PLAN.md - PyInstaller spec file and Inno Setup script configuration
+- [x] 04-02-PLAN.md - Windows build and installer verification (checkpoint)
 
 ## Progress
 
@@ -91,7 +91,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Core Transformation + Basic UI | 3/3 | Complete | 2026-01-30 |
 | 2. Preset Management | 2/2 | Complete | 2026-01-30 |
 | 3. Batch Processing | 2/2 | Complete | 2026-01-30 |
-| 4. Distribution | 0/2 | In Progress | - |
+| 4. Distribution | 2/2 | Complete | 2026-01-30 |
 
 ---
 *Roadmap created: 2026-01-30*
