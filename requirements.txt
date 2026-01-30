@@ -1,2 +1,3 @@
 ifcopenshell==0.7.10
 ifcpatch==0.7.10
+platformdirs>=4.0.0
