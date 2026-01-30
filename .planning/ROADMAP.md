@@ -29,10 +29,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can toggle "Rotate First" to control transformation order
   4. User clicks process button and transformed file appears in output directory with original filename
   5. User sees clear error messages if transformation fails (invalid file, missing values)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- TBD (created during plan-phase)
+- [ ] 01-01-PLAN.md - Project setup and core IFC transformation model
+- [ ] 01-02-PLAN.md - Validation utilities and Tkinter view layer
+- [ ] 01-03-PLAN.md - Controller integration and working application
 
 ### Phase 2: Preset Management
 **Goal**: Users can save and reuse transformation presets
@@ -83,7 +85,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Transformation + Basic UI | 0/TBD | Not started | - |
+| 1. Core Transformation + Basic UI | 0/3 | Planned | - |
 | 2. Preset Management | 0/TBD | Not started | - |
 | 3. Batch Processing | 0/TBD | Not started | - |
 | 4. Distribution | 0/TBD | Not started | - |
