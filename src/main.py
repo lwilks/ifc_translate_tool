@@ -1,19 +1,28 @@
 """
 IFC Translate Tool - Application Entry Point
 
-This will be expanded in Plan 03 to create the full MVC application.
-For now, it serves as a placeholder to verify the project structure.
+Creates and wires together the MVC components (Model, View, Controller)
+and launches the Tkinter application.
 """
 
-# Future imports for MVC components (will be implemented in Plan 03)
-# from model import IFCTransformModel
-# from view import TransformView
-# from controller import TransformController
+import tkinter as tk
+from src.model import IFCTransformModel
+from src.view import TransformView
+from src.controller import TransformController
 
 
 def main():
     """Application entry point."""
-    print("IFC Translate Tool starting...")
+    # Create root window
+    root = tk.Tk()
+
+    # Create MVC components
+    model = IFCTransformModel()
+    view = TransformView(root)
+    controller = TransformController(model, view)
+
+    # Start the application
+    root.mainloop()
 
 
 if __name__ == "__main__":
