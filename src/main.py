@@ -17,6 +17,7 @@ import tkinter as tk
 from src.model import IFCTransformModel
 from src.view import TransformView
 from src.controller import TransformController
+from src.presets_model import PresetsModel
 
 
 def main():
@@ -27,7 +28,10 @@ def main():
     # Create MVC components
     model = IFCTransformModel()
     view = TransformView(root)
-    controller = TransformController(model, view)
+    presets_model = PresetsModel()
+
+    # Create controller (wires everything together)
+    controller = TransformController(model, view, presets_model)
 
     # Bring window to front on macOS
     root.lift()

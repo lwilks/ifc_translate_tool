@@ -22,16 +22,18 @@ class TransformController:
     - Provide user feedback via view
     """
 
-    def __init__(self, model, view):
+    def __init__(self, model, view, presets_model):
         """
-        Initialize controller with model and view.
+        Initialize controller with model, view, and presets model.
 
         Args:
             model: IFCTransformModel instance
             view: TransformView instance
+            presets_model: PresetsModel instance
         """
         self.model = model
         self.view = view
+        self.presets_model = presets_model
         self.result_queue = queue.Queue()
 
         # Wire controller to view
@@ -39,6 +41,10 @@ class TransformController:
 
         # Start queue polling for background thread results
         self._start_queue_polling()
+
+        # Load preset list and auto-load last used
+        self._refresh_preset_list()
+        self.load_last_preset()
 
     def _start_queue_polling(self):
         """Start periodic queue polling to check for thread results."""
@@ -147,3 +153,80 @@ class TransformController:
                 'success': False,
                 'message': f'Transformation failed: {e}'
             })
+
+    def _refresh_preset_list(self):
+        """Refresh the preset dropdown with current presets."""
+        presets = self.presets_model.list_presets()
+        self.view.update_preset_list(presets)
+
+    def on_preset_selected(self):
+        """Handle preset selection from dropdown."""
+        preset_name = self.view.get_selected_preset()
+        if not preset_name:
+            return
+
+        presets = self.presets_model.load_presets()
+        if preset_name in presets:
+            self.view.set_values(presets[preset_name])
+            self.presets_model.save_last_used(preset_name)
+
+    def on_save_preset(self):
+        """Handle save preset button click."""
+        # Get preset name from user
+        preset_name = self.view.ask_preset_name()
+        if not preset_name:
+            return
+
+        # Check for overwrite
+        existing_presets = self.presets_model.list_presets()
+        if preset_name in existing_presets:
+            if not self.view.confirm_overwrite(preset_name):
+                return
+
+        # Get current form values (exclude file paths)
+        values = self.view.get_values()
+        preset_data = {
+            'x': values['x'],
+            'y': values['y'],
+            'z': values['z'],
+            'rotation': values['rotation'],
+            'rotate_first': values['rotate_first']
+        }
+
+        # Save preset
+        self.presets_model.save_preset(preset_name, preset_data)
+        self.presets_model.save_last_used(preset_name)
+
+        # Refresh UI
+        self._refresh_preset_list()
+        self.view.set_selected_preset(preset_name)
+        self.view.show_status(f"Preset '{preset_name}' saved")
+
+    def on_delete_preset(self):
+        """Handle delete preset button click."""
+        preset_name = self.view.get_selected_preset()
+        if not preset_name:
+            self.view.show_error("No preset selected")
+            return
+
+        if not self.view.confirm_delete(preset_name):
+            return
+
+        # Delete preset
+        self.presets_model.delete_preset(preset_name)
+
+        # Clear selection and refresh
+        self.view.set_selected_preset('')
+        self._refresh_preset_list()
+        self.view.show_status(f"Preset '{preset_name}' deleted")
+
+    def load_last_preset(self):
+        """Load the last used preset on startup."""
+        last_used = self.presets_model.get_last_used()
+        if not last_used:
+            return
+
+        presets = self.presets_model.load_presets()
+        if last_used in presets:
+            self.view.set_selected_preset(last_used)
+            self.view.set_values(presets[last_used])
