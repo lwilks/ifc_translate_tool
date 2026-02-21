@@ -8,6 +8,7 @@ to IFC files.
 
 import logging
 import ifcopenshell
+import ifcopenshell.util.unit
 import ifcpatch
 
 
@@ -55,9 +56,9 @@ class IFCTransformModel:
         Args:
             input_path: Path to input IFC file (string)
             output_path: Path for output IFC file (string)
-            x: Translation offset in X direction (project units, typically meters)
-            y: Translation offset in Y direction (project units, typically meters)
-            z: Translation offset in Z direction (project units, typically meters)
+            x: Translation offset in X direction (metres)
+            y: Translation offset in Y direction (metres)
+            z: Translation offset in Z direction (metres)
             should_rotate_first: If True, rotate then translate; if False, translate then rotate
             rotation_z: Optional rotation angle around Z axis in decimal degrees.
                        Positive values rotate counter-clockwise when viewed from above.
@@ -84,15 +85,26 @@ class IFCTransformModel:
             # Open IFC file with path string to capture C++ parse errors
             ifc_file = ifcopenshell.open(input_path)
 
+            # Convert metre offsets to project units
+            # unit_scale maps: ifc_project_length * unit_scale = si_metres
+            # So: si_metres / unit_scale = ifc_project_length
+            unit_scale = ifcopenshell.util.unit.calculate_unit_scale(ifc_file)
+            x_proj = x / unit_scale
+            y_proj = y / unit_scale
+            z_proj = z / unit_scale
+            logger.info(f"Project unit scale: {unit_scale} (1 project unit = {unit_scale}m)")
+            logger.info(f"Converted offsets from metres ({x}, {y}, {z}) "
+                       f"to project units ({x_proj}, {y_proj}, {z_proj})")
+
             # Build arguments list for OffsetObjectPlacements
             # Format: [x, y, z, should_rotate_first, rotation_angle (optional)]
-            arguments = [x, y, z, should_rotate_first]
+            arguments = [x_proj, y_proj, z_proj, should_rotate_first]
             if rotation_z is not None:
                 arguments.append(rotation_z)
-                logger.info(f"Applying transformation: offset=({x}, {y}, {z}), "
+                logger.info(f"Applying transformation: offset=({x_proj}, {y_proj}, {z_proj}), "
                           f"rotate_first={should_rotate_first}, rotation_z={rotation_z}°")
             else:
-                logger.info(f"Applying transformation: offset=({x}, {y}, {z}), "
+                logger.info(f"Applying transformation: offset=({x_proj}, {y_proj}, {z_proj}), "
                           f"rotate_first={should_rotate_first}, no rotation")
 
             # Execute transformation using IfcPatch
